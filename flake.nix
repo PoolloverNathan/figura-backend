@@ -126,7 +126,7 @@
                 shellHook =
                   if ide
                   then ''
-                    shellHook=
+                    export shellHook=
                     NIX_LD_LIBRARY_PATH="${lib.makeLibraryPath [pkgs.libgnurl pkgs.curl]}";
                     NIX_LD="$(cat ${pkgs.stdenv.cc + /nix-support/dynamic-linker})";
                     ${
@@ -143,6 +143,10 @@
         packages.${system} = {
           inherit (pkgs) figura-backend;
           default = pkgs.figura-backend;
+        };
+        apps.${system}.default = {
+          type = "app";
+          program = "${pkgs.figura-backend}/bin/figura-backend";
         };
 
         # Provide a 'nix develop' environment for interactive hacking.

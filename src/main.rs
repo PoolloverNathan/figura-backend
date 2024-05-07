@@ -23,7 +23,7 @@ impl Actor for Ws {
 }
 
 fn config(cfg: &mut web::ServiceConfig) {
-    cfg.service(web::resource("/").to(|| async { "Hello Nixers!\n" }));
+    cfg.service(web::resource("/").to(|| async { ":3" }));
     cfg.route("/ws", web::get().to(Ws::start));
 }
 
