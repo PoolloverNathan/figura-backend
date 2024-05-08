@@ -1,6 +1,9 @@
 mod c2s;
 mod s2c;
 
+pub use c2s::C2SMessage;
+pub use s2c::S2CMessage;
+
 use std::fmt::*;
 use std::ops::RangeInclusive;
 
