@@ -2,7 +2,7 @@ use std::convert::TryFrom;
 
 #[repr(u16)]
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
-enum BackendError {
+pub enum BackendError {
     NormalClosure = 1000,
     GoingAway,
     ProtocolError,
@@ -52,7 +52,7 @@ impl TryFrom<u16> for BackendError {
 }
 #[cfg(test)]
 #[test]
-fn test_backend_error_round_trip() {
+fn backend_error_round_trip() {
     let values = [
         BackendError::NormalClosure,
         BackendError::GoingAway,
