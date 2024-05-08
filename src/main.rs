@@ -241,11 +241,6 @@ impl fmt::Display for MessageLoadError {
 fn config(cfg: &mut web::ServiceConfig) {
     cfg.service(web::resource("/").to(|| async { ":3" }));
     cfg.service(
-        web::resource("/{user}")
-            .guard(Get())
-            .to(|| async { "user" }),
-    );
-    cfg.service(
         web::resource("/limits")
             .guard(Get())
             .to(|| async { "@toomanylimits" }),
@@ -261,6 +256,16 @@ fn config(cfg: &mut web::ServiceConfig) {
             .to(|| async { "did a coding thing :)" }),
     );
     cfg.service(
+        web::resource("/equip")
+            .guard(Post())
+            .to(|| async { "equup avatar" }),
+    );
+    cfg.service(
+        web::resource("/{user}")
+            .guard(Get())
+            .to(|| async { "user" }),
+    );
+    cfg.service(
         web::resource("/{avatar}")
             .guard(Put())
             .to(|| async { "put avatar" }),
@@ -269,11 +274,6 @@ fn config(cfg: &mut web::ServiceConfig) {
         web::resource("/{avatar}")
             .guard(Delete())
             .to(|| async { "delete avatar" }),
-    );
-    cfg.service(
-        web::resource("/equip")
-            .guard(Post())
-            .to(|| async { "equup avatar" }),
     );
     cfg.route("/ws", web::get().to(Ws::start));
 }
