@@ -1,25 +1,5 @@
 {
   "nodes": {
-    "extensions": {
-      "inputs": {
-        "flake-compat": "flake-compat",
-        "flake-utils": "flake-utils",
-        "nixpkgs": "nixpkgs"
-      },
-      "locked": {
-        "lastModified": 1715044893,
-        "narHash": "sha256-E5nf7cUIddz7jW20/imPD3ROUjIl5FFHSvGitNB1aWc=",
-        "owner": "nix-community",
-        "repo": "nix-vscode-extensions",
-        "rev": "f3aeab3207826319519f1c7d05c856b3039515aa",
-        "type": "github"
-      },
-      "original": {
-        "owner": "nix-community",
-        "repo": "nix-vscode-extensions",
-        "type": "github"
-      }
-    },
     "flake-compat": {
       "flake": false,
       "locked": {
@@ -33,6 +13,24 @@
       "original": {
         "owner": "edolstra",
         "repo": "flake-compat",
+        "type": "github"
+      }
+    },
+    "flake-parts": {
+      "inputs": {
+        "nixpkgs-lib": "nixpkgs-lib"
+      },
+      "locked": {
+        "lastModified": 1714641030,
+        "narHash": "sha256-yzcRNDoyVP7+SCNX0wmuDju1NUCt8Dz9+lyUXEI0dbI=",
+        "owner": "hercules-ci",
+        "repo": "flake-parts",
+        "rev": "e5d10a24b66c3ea8f150e47dfdb0416ab7c3390e",
+        "type": "github"
+      },
+      "original": {
+        "owner": "hercules-ci",
+        "repo": "flake-parts",
         "type": "github"
       }
     },
@@ -54,22 +52,34 @@
         "type": "github"
       }
     },
-    "import-cargo": {
+    "nixpkgs": {
       "locked": {
-        "lastModified": 1594305518,
-        "narHash": "sha256-frtArgN42rSaEcEOYWg8sVPMUK+Zgch3c+wejcpX3DY=",
-        "owner": "edolstra",
-        "repo": "import-cargo",
-        "rev": "25d40be4a73d40a2572e0cc233b83253554f06c5",
+        "lastModified": 1715220225,
+        "narHash": "sha256-X0xvboLSjfC5s/M1yuPdSdc6yzKV8536hTTWCSKF5Xc=",
+        "owner": "nixos",
+        "repo": "nixpkgs",
+        "rev": "ac34158a823c7596e0106c806d0b7df47885fa73",
         "type": "github"
       },
       "original": {
-        "owner": "edolstra",
-        "repo": "import-cargo",
+        "owner": "nixos",
+        "repo": "nixpkgs",
         "type": "github"
       }
     },
-    "nixpkgs": {
+    "nixpkgs-lib": {
+      "locked": {
+        "lastModified": 1714640452,
+        "narHash": "sha256-QBx10+k6JWz6u7VsohfSw8g8hjdBZEf8CFzXH1/1Z94=",
+        "type": "tarball",
+        "url": "https://github.com/NixOS/nixpkgs/archive/50eb7ecf4cd0a5756d7275c8ba36790e5bd53e33.tar.gz"
+      },
+      "original": {
+        "type": "tarball",
+        "url": "https://github.com/NixOS/nixpkgs/archive/50eb7ecf4cd0a5756d7275c8ba36790e5bd53e33.tar.gz"
+      }
+    },
+    "nixpkgs_2": {
       "locked": {
         "lastModified": 1713805509,
         "narHash": "sha256-YgSEan4CcrjivCNO5ZNzhg7/8ViLkZ4CB/GrGBVSudo=",
@@ -85,27 +95,29 @@
         "type": "github"
       }
     },
-    "nixpkgs_2": {
+    "root": {
+      "inputs": {
+        "stddev": "stddev"
+      }
+    },
+    "stddev": {
+      "inputs": {
+        "flake-parts": "flake-parts",
+        "nixpkgs": "nixpkgs",
+        "vscode-extensions": "vscode-extensions"
+      },
       "locked": {
-        "lastModified": 1715059051,
-        "narHash": "sha256-bl1X5IW/GdwldqSUvyOE/WuRNl6jHx7kxX+bOUod3Wk=",
-        "owner": "nixos",
-        "repo": "nixpkgs",
-        "rev": "791853141d71f66ec9819a3064198131ae9760b8",
+        "lastModified": 1715311851,
+        "narHash": "sha256-7S4SQowvd5kehSMYpuKxN2ED152b8Dfnb+E3KW0ZFIg=",
+        "owner": "PoolloverNathan",
+        "repo": "stddev",
+        "rev": "421290cde2d8989d988e14690a3811a985b0806c",
         "type": "github"
       },
       "original": {
-        "owner": "nixos",
-        "ref": "7918531",
-        "repo": "nixpkgs",
+        "owner": "PoolloverNathan",
+        "repo": "stddev",
         "type": "github"
-      }
-    },
-    "root": {
-      "inputs": {
-        "extensions": "extensions",
-        "import-cargo": "import-cargo",
-        "nixpkgs": "nixpkgs_2"
       }
     },
     "systems": {
@@ -120,6 +132,26 @@
       "original": {
         "owner": "nix-systems",
         "repo": "default",
+        "type": "github"
+      }
+    },
+    "vscode-extensions": {
+      "inputs": {
+        "flake-compat": "flake-compat",
+        "flake-utils": "flake-utils",
+        "nixpkgs": "nixpkgs_2"
+      },
+      "locked": {
+        "lastModified": 1715217683,
+        "narHash": "sha256-xr0rPyije/zNj/L1kw1DI/O7CNmd0eQw2ePBFM2Id4g=",
+        "owner": "nix-community",
+        "repo": "nix-vscode-extensions",
+        "rev": "bd7ff7845868d9238e6365dbd61bec13b4d1dee6",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nix-community",
+        "repo": "nix-vscode-extensions",
         "type": "github"
       }
     }

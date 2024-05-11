@@ -1,13 +1,17 @@
+mod backend;
 mod backend_error;
 mod message;
 
 use actix::{Actor, StreamHandler};
 use actix_web::{
     guard::{Delete, Get, Post, Put},
-    web, App, Error, HttpRequest, HttpResponse, HttpServer,
+    web::{self, Path},
+    App, Error, HttpRequest, HttpResponse, HttpServer,
 };
 use actix_web_actors::ws::{self, ProtocolError};
-use default_env::default_env;
+use std::fs::File;
+use std::io::BufReader;
+
 struct Ws;
 impl Ws {
     async fn start(req: HttpRequest, stream: web::Payload) -> Result<HttpResponse, Error> {
@@ -29,77 +33,70 @@ impl Actor for Ws {
 }
 
 fn config(cfg: &mut web::ServiceConfig) {
-    cfg.service(web::resource("/").to(|| async { ":3" }));
+    cfg.service(web::resource("/api/").to(|| async { ":3" }));
     cfg.service(
-        web::resource("/limits")
+        web::resource("/api/limits")
             .guard(Get())
-            .to(|| async { "@toomanylimits" }),
+            .to(|| async move { todo!("@toomanylimits") as &str }),
     );
     cfg.service(
-        web::resource("/version")
+        web::resource("/api/version")
             .guard(Get())
-            .to(|| async { default_env!("version", "dev") }),
+            .to(|| async move { "{\"release\":\"2.7.1\",\"prerelease\":\"2.7.1\"}" }),
     );
     cfg.service(
-        web::resource("/motd")
+        web::resource("/api/motd")
             .guard(Get())
-            .to(|| async { "did a coding thing :)" }),
+            .to(|| async move { "\"did a coding thing :)\"" }),
     );
     cfg.service(
-        web::resource("/equip")
+        web::resource("/api/equip")
             .guard(Post())
-            .to(|| async { "equup avatar" }),
+            .to(|| async move { todo!("equip avatar") as &str }),
     );
     cfg.service(
-        web::resource("/{user}")
+        web::resource("/api/{user}")
             .guard(Get())
-            .to(|| async { "user" }),
+            .to(|p: Path<(String,)>| async move { todo!("get user {}", p.0) as &str }),
     );
     cfg.service(
-        web::resource("/{avatar}")
+        web::resource("/api/{avatar}")
             .guard(Put())
-            .to(|| async { "put avatar" }),
+            .to(|p: Path<(String,)>| async move { todo!("put avatar {}", p.0) as &str }),
     );
     cfg.service(
-        web::resource("/{avatar}")
+        web::resource("/api/{avatar}")
             .guard(Delete())
-            .to(|| async { "delete avatar" }),
+            .to(|p: Path<(String,)>| async move { todo!("delete avatar {}", p.0) as &str }),
     );
     cfg.route("/ws", web::get().to(Ws::start));
 }
 
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
-    HttpServer::new(|| App::new().configure(config))
-        .bind("0.0.0.0:25565")?
-        .run()
-        .await
+    env_logger::init();
+    let tls_config = rustls::ServerConfig::builder()
+        .with_safe_defaults()
+        .with_no_client_auth()
+        .with_single_cert(
+            rustls_pemfile::certs(&mut BufReader::new(File::open("cert.pem")?))
+                .flatten()
+                .map(|a| rustls::Certificate(a.into_iter().copied().collect()))
+                .collect(),
+            rustls_pemfile::private_key(&mut BufReader::new(File::open("key.pem")?))
+                .into_iter()
+                .flatten()
+                .map(|a| rustls::PrivateKey(a.secret_der().into_iter().copied().collect()))
+                .next()
+                .unwrap(),
+        )
+        .unwrap();
+    HttpServer::new(move || {
+        App::new()
+            .wrap(actix_web::middleware::Logger::default())
+            .configure(config)
+    })
+    .bind_rustls("0.0.0.0:5443", tls_config)?
+    .run()
+    .await
 }
-
-// #[cfg(test)]
-// mod tests {
-//     use super::*;
-//     use actix_web::dev::Service;
-//     use actix_web::{http, test, App, Error};
-
-//     #[actix_rt::test]
-//     async fn test() -> Result<(), Error> {
-//         let mut app = test::init_service(App::new().configure(config)).await;
-
-//         let resp = app
-//             .call(test::TestRequest::get().uri("/").to_request())
-//             .await
-//             .unwrap();
-
-//         assert_eq!(resp.status(), http::StatusCode::OK);
-
-//         let body = match resp.response().body().as_ref() {
-//             Some(actix_web::body::Body::Bytes(bytes)) => bytes,
-//             _ => panic!("Response error"),
-//         };
-
-//         assert_eq!(body, "Hello Nixers!\n");
-
-//         Ok(())
-//     }
-// }

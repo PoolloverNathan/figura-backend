@@ -1,0 +1,7 @@
+{
+    "files.autoSaveDelay": 10,
+    "files.autoSave": "afterDelay",
+    "rust-analyzer.assist.emitMustUse": true,
+    "rust-analyzer.completion.fullFunctionSignatures.enable": true,
+    "rust-analyzer.cargo.buildScripts.enable": true
+}
